@@ -1,3 +1,4 @@
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -11,6 +12,7 @@ public class Solution05 {
             System.out.println("text = " + text);
             String byteFileName = "output-byte.txt";
             saveByByteStream(text, byteFileName);
+            loadByByteStream(byteFileName);
         }
     }
 
@@ -23,6 +25,18 @@ public class Solution05 {
             // throws로 넣는 선택
             // runtime으로 던질 거냐
             // 여기서 마무리 지을 거냐
+            throw new RuntimeException(e);
+        }
+    }
+
+    static void loadByByteStream(String fileName) {
+        try (FileInputStream fis = new FileInputStream(fileName)) {
+            int b;
+            while ((b = fis.read()) != -1) {
+                System.out.print((char) b);
+            }
+            System.out.println();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
