@@ -4,7 +4,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.MatchResult;
+import java.util.regex.Pattern;
 
 public class Solution08 {
     public static void main(String[] args) {
@@ -27,6 +30,7 @@ public class Solution08 {
         System.out.println("clientId = " + clientId.substring(0, 4) + "*".repeat(8));
         System.out.println("clientSecret = " + clientSecret.substring(0, 4) + "*".repeat(8));
 //        https://developers.naver.com/apps/#/list
+        List<String> urlList = new ArrayList<>();
         HttpClient client = HttpClient.newHttpClient();
         String url = "https://openapi.naver.com/v1/search/image?query=%s&display=%d&start=%d&sort=sim"
 //                .formatted(keyword, 5, 1);
@@ -38,11 +42,23 @@ public class Solution08 {
                 .build();
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("response = " + response.body());
+//            System.out.println("response = " + response.body());
+            String body = response.body();
+            // 정규표현식
+            // https://regexr.com/
+            // https://regex101.com/
+            // 정규표현식, String -> 강제적으로 JSON을 해석 -> Jackson/ObjectMapper
+            Pattern pattern = Pattern.compile("\"link\":\"(.*?)\"");
+            for (MatchResult matchResult : pattern.matcher(body).results().toList()) {
+                // ( ) <- Group(1)
+                System.out.println("matchResult = " + matchResult.group(1));
+                urlList.add(matchResult.group(1));
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        return List.of();
+//        return List.of();
+        return urlList;
     }
 }
