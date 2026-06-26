@@ -1,11 +1,26 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Solution07 {
     public static void main(String[] args) {
         String file1 = "file1.txt";
         writeTextWithBuffer(file1);
+        readTextWithBuffer(file1);
+    }
+
+    private static void readTextWithBuffer(String file) {
+        Path path = Paths.get(file);
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void writeTextWithBuffer(String file) {
