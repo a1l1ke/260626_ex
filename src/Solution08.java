@@ -13,6 +13,11 @@ public class Solution08 {
     }
 
     private static List<String> getImageUrlList(String keyword) {
+        String clientId = System.getenv("NAVER_CLIENT_ID");
+        String clientSecret = System.getenv("NAVER_CLIENT_SECRET");
+        if (clientId == null || clientSecret == null) {
+            throw new RuntimeException("인증정보가 없습니다");
+        }
         return List.of();
     }
 }
