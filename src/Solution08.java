@@ -25,6 +25,33 @@ public class Solution08 {
         // URL 리스트를 자체를 파일로 저장
         saveUrlList(urlList, keyword);
         // 이미지를 파일 형태로 각각 다운로드
+        downloadImages(urlList, keyword);
+    }
+
+    private static void downloadImages(List<String> urlList, String keyword) {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        for (String url : urlList) {
+            System.out.println("url = " + url);
+            String[] tmp = url.split("\\.");
+            String ext = tmp[tmp.length - 1]; // 확장자 추출
+            if (ext.length() > 4) { // 일반적인 이미지 확장자는 4자리까지인데, 5자리 이상 나온다면 확장자 X
+//                throw new RuntimeException("확장자 오류");
+                System.out.println("확장자 오류");
+                continue;
+            }
+            Path path = Paths.get("%s-%d.%s".formatted(keyword, System.currentTimeMillis(), ext));
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create(url))
+                    .build();
+            try {
+                HttpResponse<Path> response = httpClient
+                        .send(request, HttpResponse.BodyHandlers.ofFile(path));
+                System.out.println("response = " + response.uri());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private static void saveUrlList(List<String> urlList, String keyword) {
