@@ -8,6 +8,8 @@ public class AppService {
     }
 
     public void run() {
+        System.out.println("AppService.run");
         appProvider.run();
+        System.out.println("AppService.run.complete");
     }
 }
