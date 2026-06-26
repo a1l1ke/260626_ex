@@ -1,3 +1,7 @@
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 public class Solution08 {
@@ -18,6 +22,23 @@ public class Solution08 {
         if (clientId == null || clientSecret == null) {
             throw new RuntimeException("인증정보가 없습니다");
         }
+        System.out.println("clientId = " + clientId.substring(0, 4) + "*".repeat(8));
+        System.out.println("clientSecret = " + clientSecret.substring(0, 4) + "*".repeat(8));
+//        https://developers.naver.com/apps/#/list
+        HttpClient client = HttpClient.newHttpClient();
+        String url = "";
+        HttpRequest request = HttpRequest.newBuilder()
+//                .GET() // 기본
+                .uri(URI.create(url))
+                .headers("X-Naver-Client-Id", clientId, "X-Naver-Client-Secret", clientSecret)
+                .build();
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("response = " + response.body());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         return List.of();
     }
 }
