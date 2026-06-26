@@ -9,6 +9,11 @@ public class Solution07 {
         String file1 = "file1.txt";
         writeTextWithBuffer(file1);
         readTextWithBuffer(file1);
+        String file2 = "file2.txt";
+        useScannerWithBuffer(file2);
+    }
+
+    private static void useScannerWithBuffer(String file) {
     }
 
     private static void readTextWithBuffer(String file) {
@@ -33,4 +38,5 @@ public class Solution07 {
             throw new RuntimeException(e);
         }
     }
+
 }
