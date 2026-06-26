@@ -1,7 +1,9 @@
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class Solution08 {
@@ -26,7 +28,9 @@ public class Solution08 {
         System.out.println("clientSecret = " + clientSecret.substring(0, 4) + "*".repeat(8));
 //        https://developers.naver.com/apps/#/list
         HttpClient client = HttpClient.newHttpClient();
-        String url = "";
+        String url = "https://openapi.naver.com/v1/search/image?query=%s&display=%d&start=%d&sort=sim"
+//                .formatted(keyword, 5, 1);
+                .formatted(URLEncoder.encode(keyword, StandardCharsets.UTF_8), 5, 1);
         HttpRequest request = HttpRequest.newBuilder()
 //                .GET() // 기본
                 .uri(URI.create(url))
