@@ -3,6 +3,9 @@ import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Solution07 {
     public static void main(String[] args) {
@@ -11,9 +14,33 @@ public class Solution07 {
         readTextWithBuffer(file1);
         String file2 = "file2.txt";
         useScannerWithBuffer(file2);
+        readTextWithBuffer(file2);
     }
 
     private static void useScannerWithBuffer(String file) {
+        List<String> lines = new ArrayList<>();
+        try (Scanner sc = new Scanner(System.in);) {
+            System.out.println("[저장할 텍스트를 입력하세요] 저장은 w");
+            while (true) {
+                String input = sc.nextLine();
+                if (input.equals("w")) {
+                    break;
+                }
+                System.out.println(input);
+                lines.add(input);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Path path = Paths.get(file);
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void readTextWithBuffer(String file) {
